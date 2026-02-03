@@ -5,7 +5,7 @@
 }
 
 body {
-    font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, 'Helvetica Neue', Arial, sans-serif;
+    font-family: 'Segoe UI', -apple-system, BlinkMacSystemFont, Roboto, 'Helvetica Neue', Arial, sans-serif;
     background: #ffffff;
     color: #000000;
     height: 100vh;
@@ -24,7 +24,7 @@ body {
     flex: 1;
     display: flex;
     flex-direction: column;
-    background: linear-gradient(135deg, #e3f2fd 0%, #c8e6c9 30%, #fff9c4 60%, #e3f2fd 100%);
+    background: linear-gradient(to bottom, #e3f2fd 0%, #c8e6c9 50%, #fff9c4 100%);
     position: relative;
     overflow: hidden;
     width: 100%;
@@ -250,15 +250,20 @@ body {
     align-items: center;
     justify-content: center;
     padding: 10px;
-    min-height: 80px;
+    min-height: 120px;
 }
 
 .egg {
-    font-size: 64px;
+    width: 120px;
+    height: 120px;
     transition: transform 0.3s ease;
     cursor: pointer;
     user-select: none;
-    line-height: 1;
+}
+
+.egg svg {
+    width: 100%;
+    height: 100%;
 }
 
 .egg.hatching {

@@ -6,54 +6,101 @@ const sendBtn = document.getElementById('sendBtn');
 let conversationStep = 0;
 let hatched = false;
 let lottieAnimation = null;
+let eggMessageId = null;
 
-// Conversation flow
-const conversation = [
-    {
-        type: 'incoming',
-        text: 'Hey, have you seen the first Send-2-Earn game in Telegram?',
-        delay: 1000
-    },
-    {
-        type: 'waiting',
-        text: 'No, what is it?',
-        delay: 2000
-    },
-    {
-        type: 'incoming',
-        text: '🥚',
-        isEgg: true,
-        delay: 1500
-    },
-    {
-        type: 'incoming',
-        text: 'Hatch it to find out!',
-        delay: 1000
-    }
-];
-
-// Initialize conversation
+// Start: Pavel sends egg after 1.5 seconds
 setTimeout(() => {
-    startConversation();
-}, 500);
+    showEggMessage();
+}, 1500);
 
-function startConversation() {
-    showMessage(conversation[0].type, conversation[0].text, false, false, () => {
-        setTimeout(() => {
-            showMessage(conversation[1].type, conversation[1].text, false, false, () => {
-                setTimeout(() => {
-                    showMessage(conversation[2].type, conversation[2].text, true, false, () => {
-                        setTimeout(() => {
-                            showMessage(conversation[3].type, conversation[3].text, false, false);
-                        }, conversation[3].delay);
-                    });
-                }, conversation[2].delay);
-            });
-        }, conversation[1].delay);
-    });
+function showEggMessage() {
+    const messageWrapper = document.createElement('div');
+    messageWrapper.className = 'message-wrapper';
+    messageWrapper.id = 'eggMessage';
+    
+    const message = document.createElement('div');
+    message.className = 'message incoming';
+    
+    const avatar = document.createElement('div');
+    avatar.className = 'message-avatar';
+    avatar.textContent = 'PD';
+    message.appendChild(avatar);
+    
+    const messageContent = document.createElement('div');
+    messageContent.className = 'message-content';
+    
+    const messageBubble = document.createElement('div');
+    messageBubble.className = 'message-bubble';
+    
+    const eggContainer = document.createElement('div');
+    eggContainer.className = 'egg-container';
+    
+    // Load SVG egg
+    fetch('egg.svg')
+        .then(response => response.text())
+        .then(svgText => {
+            const parser = new DOMParser();
+            const svgDoc = parser.parseFromString(svgText, 'image/svg+xml');
+            const svgElement = svgDoc.querySelector('svg');
+            if (svgElement) {
+                svgElement.setAttribute('class', 'egg');
+                svgElement.setAttribute('id', 'egg');
+                eggContainer.appendChild(svgElement);
+            } else {
+                // Fallback to emoji
+                const egg = document.createElement('div');
+                egg.className = 'egg';
+                egg.id = 'egg';
+                egg.textContent = '🥚';
+                eggContainer.appendChild(egg);
+            }
+        })
+        .catch(() => {
+            // Fallback to emoji if SVG fails
+            const egg = document.createElement('div');
+            egg.className = 'egg';
+            egg.id = 'egg';
+            egg.textContent = '🥚';
+            eggContainer.appendChild(egg);
+        });
+    
+    const messageActions = document.createElement('div');
+    messageActions.className = 'message-actions';
+    
+    const hatchBtn = document.createElement('button');
+    hatchBtn.className = 'inline-btn';
+    hatchBtn.id = 'hatchBtn';
+    hatchBtn.textContent = 'Hatch';
+    hatchBtn.addEventListener('click', () => handleHatch(messageBubble, eggContainer));
+    
+    messageActions.appendChild(hatchBtn);
+    
+    const messageTime = document.createElement('div');
+    messageTime.className = 'message-time';
+    const now = new Date();
+    const timeStr = now.getHours().toString().padStart(2, '0') + ':' + 
+                   now.getMinutes().toString().padStart(2, '0');
+    messageTime.textContent = timeStr;
+    
+    messageBubble.appendChild(eggContainer);
+    messageBubble.appendChild(messageActions);
+    messageBubble.appendChild(messageTime);
+    
+    messageContent.appendChild(messageBubble);
+    message.appendChild(messageContent);
+    messageWrapper.appendChild(message);
+    
+    messagesContainer.appendChild(messageWrapper);
+    scrollToBottom();
+    
+    // Enable input after egg appears
+    setTimeout(() => {
+        messageInput.disabled = false;
+        messageInput.placeholder = 'Write a message...';
+    }, 500);
 }
 
-function showMessage(type, text, isEgg, isHatched, callback) {
+function showMessage(type, text, callback) {
     const messageWrapper = document.createElement('div');
     messageWrapper.className = 'message-wrapper';
     
@@ -73,45 +120,10 @@ function showMessage(type, text, isEgg, isHatched, callback) {
     const messageBubble = document.createElement('div');
     messageBubble.className = 'message-bubble';
     
-    if (isEgg) {
-        const eggContainer = document.createElement('div');
-        eggContainer.className = 'egg-container';
-        
-        if (isHatched) {
-            // Show Lottie animation
-            const lottieDiv = document.createElement('div');
-            lottieDiv.className = 'lottie-container';
-            lottieDiv.id = 'lottieContainer';
-            eggContainer.appendChild(lottieDiv);
-            
-            loadLottieAnimation(lottieDiv);
-        } else {
-            const egg = document.createElement('div');
-            egg.className = 'egg';
-            egg.id = 'egg';
-            egg.textContent = '🥚';
-            eggContainer.appendChild(egg);
-            
-            const messageActions = document.createElement('div');
-            messageActions.className = 'message-actions';
-            
-            const hatchBtn = document.createElement('button');
-            hatchBtn.className = 'inline-btn';
-            hatchBtn.id = 'hatchBtn';
-            hatchBtn.textContent = 'Hatch';
-            hatchBtn.addEventListener('click', () => handleHatch(messageBubble, eggContainer));
-            
-            messageActions.appendChild(hatchBtn);
-            messageBubble.appendChild(messageActions);
-        }
-        
-        messageBubble.appendChild(eggContainer);
-    } else {
-        const messageText = document.createElement('div');
-        messageText.className = 'message-text';
-        messageText.textContent = text;
-        messageBubble.appendChild(messageText);
-    }
+    const messageText = document.createElement('div');
+    messageText.className = 'message-text';
+    messageText.textContent = text;
+    messageBubble.appendChild(messageText);
     
     const messageTime = document.createElement('div');
     messageTime.className = 'message-time';
@@ -130,50 +142,6 @@ function showMessage(type, text, isEgg, isHatched, callback) {
     
     if (callback) {
         setTimeout(callback, 100);
-    }
-}
-
-function showTypingIndicator() {
-    const messageWrapper = document.createElement('div');
-    messageWrapper.className = 'message-wrapper';
-    
-    const message = document.createElement('div');
-    message.className = 'message incoming';
-    
-    const avatar = document.createElement('div');
-    avatar.className = 'message-avatar';
-    avatar.textContent = 'PD';
-    message.appendChild(avatar);
-    
-    const messageContent = document.createElement('div');
-    messageContent.className = 'message-content';
-    
-    const messageBubble = document.createElement('div');
-    messageBubble.className = 'message-bubble';
-    
-    const typingIndicator = document.createElement('div');
-    typingIndicator.className = 'typing-indicator';
-    for (let i = 0; i < 3; i++) {
-        const dot = document.createElement('span');
-        typingIndicator.appendChild(dot);
-    }
-    
-    messageBubble.appendChild(typingIndicator);
-    messageContent.appendChild(messageBubble);
-    message.appendChild(messageContent);
-    messageWrapper.appendChild(message);
-    messageWrapper.id = 'typingIndicator';
-    
-    messagesContainer.appendChild(messageWrapper);
-    scrollToBottom();
-    
-    return messageWrapper;
-}
-
-function removeTypingIndicator() {
-    const indicator = document.getElementById('typingIndicator');
-    if (indicator) {
-        indicator.remove();
     }
 }
 
@@ -203,11 +171,11 @@ function handleHatch(messageBubble, eggContainer) {
             loadLottieAnimation(lottieDiv);
             
             setTimeout(() => {
-                showMessage('incoming', 'Congratulations! You\'ve hatched your first egg! 🎉', false, false, () => {
+                showMessage('incoming', 'Congratulations! You\'ve hatched your first egg! 🎉', () => {
                     setTimeout(() => {
-                        showMessage('incoming', 'This is the future of gaming on Telegram. Earn while you play! 💰', false, false, () => {
+                        showMessage('incoming', 'This is the future of gaming on Telegram. Earn while you play! 💰', () => {
                             setTimeout(() => {
-                                showMessage('incoming', 'Want to learn more? Join our community! 👥', false, false);
+                                showMessage('incoming', 'Want to learn more? Join our community! 👥', false);
                             }, 1500);
                         });
                     }, 1500);
@@ -265,14 +233,22 @@ function scrollToBottom() {
     messagesContainer.scrollTop = messagesContainer.scrollHeight;
 }
 
-// Handle user input (for future expansion)
+// Handle user input
 messageInput.addEventListener('keypress', (e) => {
     if (e.key === 'Enter' && !sendBtn.disabled) {
         const text = messageInput.value.trim();
         if (text) {
-            showMessage('outgoing', text, false, false);
+            showMessage('outgoing', text, false);
             messageInput.value = '';
             scrollToBottom();
+            
+            // Check if user asked "what is it" or similar
+            const lowerText = text.toLowerCase();
+            if (lowerText.includes('what') || lowerText.includes('что')) {
+                setTimeout(() => {
+                    showMessage('incoming', 'Hatch it to find out!', false);
+                }, 1000);
+            }
         }
     }
 });
@@ -280,8 +256,21 @@ messageInput.addEventListener('keypress', (e) => {
 sendBtn.addEventListener('click', () => {
     const text = messageInput.value.trim();
     if (text) {
-        showMessage('outgoing', text, false, false);
+        showMessage('outgoing', text, false);
         messageInput.value = '';
         scrollToBottom();
+        
+        // Check if user asked "what is it" or similar
+        const lowerText = text.toLowerCase();
+        if (lowerText.includes('what') || lowerText.includes('что')) {
+            setTimeout(() => {
+                showMessage('incoming', 'Hatch it to find out!', false);
+            }, 1000);
+        }
     }
+});
+
+// Enable send button when typing
+messageInput.addEventListener('input', () => {
+    sendBtn.disabled = !messageInput.value.trim();
 });

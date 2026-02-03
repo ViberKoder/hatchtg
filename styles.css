@@ -5,11 +5,13 @@
 }
 
 body {
-    font-family: 'Segoe UI', -apple-system, BlinkMacSystemFont, Roboto, 'Helvetica Neue', Arial, sans-serif;
-    background: #ffffff;
+    font-family: 'Segoe UI Variable', 'Segoe UI', -apple-system, BlinkMacSystemFont, Roboto, 'Helvetica Neue', Arial, sans-serif;
+    background: #f0f0f0;
     color: #000000;
     height: 100vh;
     overflow: hidden;
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
 }
 
 .telegram-container {
@@ -47,7 +49,7 @@ body {
     width: 50px;
     height: 50px;
     border: 4px solid #f0f0f0;
-    border-top: 4px solid #0088cc;
+    border-top: 4px solid #3390ec;
     border-radius: 50%;
     animation: spin 1s linear infinite;
     margin: 0 auto 20px;
@@ -114,7 +116,7 @@ body {
 }
 
 .chat-header {
-    padding: 10px 20px;
+    padding: 12px 20px;
     background: #ffffff;
     border-bottom: 1px solid #e4e6eb;
     display: flex;
@@ -122,7 +124,8 @@ body {
     gap: 15px;
     position: relative;
     z-index: 1;
-    box-shadow: 0 1px 2px rgba(0, 0, 0, 0.05);
+    box-shadow: 0 1px 0 rgba(0, 0, 0, 0.08);
+    min-height: 60px;
 }
 
 .header-avatar {
@@ -251,17 +254,17 @@ body {
 
 .message-bubble {
     background: #ffffff;
-    border-radius: 12px;
-    padding: 8px 12px;
+    border-radius: 12px 12px 12px 0;
+    padding: 8px 12px 6px 12px;
     position: relative;
-    box-shadow: 0 1px 2px rgba(0, 0, 0, 0.1);
+    box-shadow: 0 1px 2px rgba(0, 0, 0, 0.08), 0 2px 4px rgba(0, 0, 0, 0.04);
 }
 
 .message.incoming .message-bubble::before {
     content: '';
     position: absolute;
     left: -8px;
-    bottom: 10px;
+    bottom: 0;
     width: 0;
     height: 0;
     border-style: solid;
@@ -271,13 +274,14 @@ body {
 
 .message.outgoing .message-bubble {
     background: #e7f3ff;
+    border-radius: 12px 12px 0 12px;
 }
 
 .message.outgoing .message-bubble::after {
     content: '';
     position: absolute;
     right: -8px;
-    bottom: 10px;
+    bottom: 0;
     width: 0;
     height: 0;
     border-style: solid;
@@ -349,7 +353,7 @@ body {
 }
 
 .inline-btn {
-    background: #0088cc;
+    background: #3390ec;
     border: none;
     border-radius: 12px;
     padding: 8px 16px;
@@ -357,15 +361,15 @@ body {
     font-size: 14px;
     font-weight: 500;
     cursor: pointer;
-    transition: all 0.2s;
+    transition: all 0.15s ease;
     font-family: inherit;
     white-space: nowrap;
+    box-shadow: 0 1px 2px rgba(51, 144, 236, 0.2);
 }
 
 .inline-btn:hover {
-    background: #0077b3;
-    transform: translateY(-1px);
-    box-shadow: 0 2px 4px rgba(0, 136, 204, 0.3);
+    background: #2d7fd1;
+    box-shadow: 0 2px 4px rgba(51, 144, 236, 0.3);
 }
 
 .inline-btn:active {
@@ -409,12 +413,13 @@ body {
     background: #ffffff;
     border: 1px solid #e4e6eb;
     border-radius: 25px;
-    padding: 8px 15px;
-    transition: border-color 0.2s;
+    padding: 9px 16px;
+    transition: all 0.15s ease;
 }
 
 .input-container:focus-within {
-    border-color: #0088cc;
+    border-color: #3390ec;
+    box-shadow: 0 0 0 1px rgba(51, 144, 236, 0.1);
 }
 
 .attach-btn,
@@ -439,11 +444,11 @@ body {
 }
 
 .send-btn {
-    color: #0088cc;
+    color: #3390ec;
 }
 
 .send-btn:hover:not(:disabled) {
-    color: #0077b3;
+    color: #2d7fd1;
     background: #e7f3ff;
 }
 

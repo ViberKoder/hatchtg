@@ -1,0 +1,11 @@
+{
+  "name": "telegram-egg-site",
+  "version": "1.0.0",
+  "description": "Telegram Web interface clone with egg hatching feature",
+  "scripts": {
+    "start": "npx serve ."
+  },
+  "keywords": ["telegram", "web", "egg", "hatch"],
+  "author": "",
+  "license": "MIT"
+}

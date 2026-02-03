@@ -8,7 +8,13 @@
     <script src="https://unpkg.com/@lottiefiles/lottie-player@latest/dist/lottie-player.js"></script>
 </head>
 <body>
-    <div class="telegram-container">
+    <div class="preloader" id="preloader">
+        <div class="preloader-content">
+            <div class="preloader-spinner"></div>
+            <div class="preloader-text">Loading...</div>
+        </div>
+    </div>
+    <div class="telegram-container" id="mainContent" style="display: none;">
         <div class="chat-area">
             <div class="chat-header">
                 <div class="header-avatar">PD</div>

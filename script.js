@@ -2,16 +2,69 @@
 const messagesContainer = document.getElementById('messagesContainer');
 const messageInput = document.getElementById('messageInput');
 const sendBtn = document.getElementById('sendBtn');
+const preloader = document.getElementById('preloader');
+const mainContent = document.getElementById('mainContent');
+const chatArea = document.querySelector('.chat-area');
 
 let conversationStep = 0;
 let hatched = false;
 let lottieAnimation = null;
 let eggMessageId = null;
 
-// Start: Pavel sends egg after 1.5 seconds
-setTimeout(() => {
-    showEggMessage();
-}, 1500);
+// Load background image and wait for it to fully load
+function loadBackgroundImage() {
+    return new Promise((resolve) => {
+        const img = new Image();
+        
+        // Try different possible image names
+        const imageNames = ['background.jpg', 'background.png', 'bg.jpg', 'bg.png'];
+        let currentIndex = 0;
+        let imageFound = false;
+        
+        function tryNextImage() {
+            if (currentIndex >= imageNames.length) {
+                // No image found, use fallback gradient
+                if (!imageFound) {
+                    chatArea.classList.remove('image-loaded');
+                }
+                resolve();
+                return;
+            }
+            
+            const imageName = imageNames[currentIndex];
+            img.onload = () => {
+                imageFound = true;
+                chatArea.classList.add('image-loaded');
+                resolve();
+            };
+            
+            img.onerror = () => {
+                currentIndex++;
+                tryNextImage();
+            };
+            
+            img.src = imageName;
+        }
+        
+        tryNextImage();
+    });
+}
+
+// Initialize: Load background and show content
+window.addEventListener('DOMContentLoaded', async () => {
+    await loadBackgroundImage();
+    
+    // Hide preloader and show content
+    setTimeout(() => {
+        preloader.classList.add('hidden');
+        mainContent.style.display = 'flex';
+        
+        // Start: Pavel sends egg after 1.5 seconds
+        setTimeout(() => {
+            showEggMessage();
+        }, 1500);
+    }, 300);
+});
 
 function showEggMessage() {
     const messageWrapper = document.createElement('div');

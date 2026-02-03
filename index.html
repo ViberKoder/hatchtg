@@ -5,37 +5,10 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Telegram Web</title>
     <link rel="stylesheet" href="styles.css">
+    <script src="https://unpkg.com/@lottiefiles/lottie-player@latest/dist/lottie-player.js"></script>
 </head>
 <body>
     <div class="telegram-container">
-        <div class="sidebar">
-            <div class="sidebar-header">
-                <button class="menu-btn" aria-label="Menu">
-                    <svg width="20" height="20" viewBox="0 0 20 20" fill="none">
-                        <path d="M2 4h16M2 10h16M2 16h16" stroke="currentColor" stroke-width="2" stroke-linecap="round"/>
-                    </svg>
-                </button>
-                <div class="search-box">
-                    <input type="text" placeholder="Search">
-                </div>
-            </div>
-            <div class="chat-list">
-                <div class="chat-item active">
-                    <div class="avatar">PD</div>
-                    <div class="chat-info">
-                        <div class="chat-name">Pavel Durov</div>
-                        <div class="chat-preview">🥚</div>
-                    </div>
-                    <div class="chat-time">now</div>
-                </div>
-            </div>
-            <button class="fab" aria-label="New message">
-                <svg width="24" height="24" viewBox="0 0 24 24" fill="none">
-                    <path d="M12 4v16M4 12h16" stroke="currentColor" stroke-width="2" stroke-linecap="round"/>
-                </svg>
-            </button>
-        </div>
-        
         <div class="chat-area">
             <div class="chat-header">
                 <div class="header-avatar">PD</div>
@@ -61,24 +34,7 @@
             </div>
             
             <div class="messages-container" id="messagesContainer">
-                <div class="message-wrapper">
-                    <div class="message incoming">
-                        <div class="message-avatar">PD</div>
-                        <div class="message-content">
-                            <div class="message-bubble">
-                                <div class="message-text">
-                                    <div class="egg-container">
-                                        <div class="egg" id="egg">🥚</div>
-                                    </div>
-                                </div>
-                                <div class="message-actions">
-                                    <button class="inline-btn" id="hatchBtn">Hatch</button>
-                                </div>
-                                <div class="message-time">12:34</div>
-                            </div>
-                        </div>
-                    </div>
-                </div>
+                <!-- Messages will be added dynamically -->
             </div>
             
             <div class="input-area">
@@ -88,14 +44,14 @@
                             <path d="M21.44 11.05l-9.19 9.19a6 6 0 0 1-8.49-8.49l9.19-9.19a4 4 0 0 1 5.66 5.66l-9.2 9.19a2 2 0 0 1-2.83-2.83l8.49-8.48" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
                         </svg>
                     </button>
-                    <input type="text" placeholder="Write a message..." disabled>
+                    <input type="text" id="messageInput" placeholder="Write a message..." disabled>
                     <button class="emoji-btn" aria-label="Emoji">
                         <svg width="24" height="24" viewBox="0 0 24 24" fill="none">
                             <circle cx="12" cy="12" r="10" stroke="currentColor" stroke-width="2"/>
                             <path d="M8 14s1.5 2 4 2 4-2 4-2M9 9h.01M15 9h.01" stroke="currentColor" stroke-width="2" stroke-linecap="round"/>
                         </svg>
                     </button>
-                    <button class="send-btn" disabled aria-label="Send">
+                    <button class="send-btn" id="sendBtn" disabled aria-label="Send">
                         <svg width="24" height="24" viewBox="0 0 24 24" fill="none">
                             <path d="M22 2L11 13M22 2l-7 20-4-9-9-4 20-7z" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
                         </svg>
@@ -105,6 +61,8 @@
         </div>
     </div>
     
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/pako/2.1.0/pako.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/lottie-web/5.12.2/lottie.min.js"></script>
     <script src="script.js"></script>
 </body>
 </html>
